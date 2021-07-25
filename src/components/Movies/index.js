@@ -7,14 +7,18 @@ import GetMovies from '../../service'
 import styles from './styles.module.scss'
 
 function Movies() {
-  const { page } = useParams()
+  const { page, name, genre } = useParams()
   const [movies, setMovies] = useState([])
   const [total, setTotal] = useState()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     (async () => {
-      const results = await GetMovies( page )
+      const filter = {
+        type: page ? 'page' : name ? 'name' : genre ? 'genre' : '',
+        value: page || name || genre
+      }
+      const results = await GetMovies( filter )
       if (results) {
         setMovies( results.movies )
         setTotal( results.total )
@@ -27,14 +31,16 @@ function Movies() {
     <>
       { loading ?
         <div>Loading...</div> :
-        <>
-          <div className={ styles.movies }>
-            { movies.map( movie =>
-              <Movie movie={ movie } key={ movie['_id'] } />
-            ) }
-          </div>
-          <Pagination total={ total } />
-        </>
+        movies && movies.length ?
+          <>
+            <div className={ styles.movies }>
+              { movies.map( movie =>
+                <Movie movie={ movie } key={ movie['_id'] } />
+              ) }
+            </div>
+            <Pagination total={ total } />
+          </> :
+          <div>No results</div>
       }
     </>
   )
