@@ -1,35 +1,42 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import Pagination from '../Pagination'
+import Movie from '../Movie'
 import GetMovies from '../../service'
 import styles from './styles.module.scss'
 
 function Movies() {
   const { page } = useParams()
   const [movies, setMovies] = useState([])
+  const [total, setTotal] = useState()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     (async () => {
-      const movies = await GetMovies( page )
-      if (movies) {
-        setMovies( movies )
+      const results = await GetMovies( page )
+      if (results) {
+        setMovies( results.movies )
+        setTotal( results.total )
         setLoading( false )
       }
     })()
   }, [ page ])
 
   return (
-    <div className={ styles.movies }>
+    <>
       { loading ?
         <div>Loading...</div> :
-        <div>
-          { movies.movies.map( movie => movie.title ) }
-          <Pagination total={ movies.total } />
-        </div>
+        <>
+          <div className={ styles.movies }>
+            { movies.map( movie =>
+              <Movie movie={ movie } key={ movie['_id'] } />
+            ) }
+          </div>
+          <Pagination total={ total } />
+        </>
       }
-    </div>
+    </>
   )
 }
 
