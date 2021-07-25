@@ -7,23 +7,36 @@ class MoviesService {
 
   async getAll (params) {
     try {
-      let movies
+      const response = {
+        movies: [],
+        total: 0
+      }
+      const limit = 20
+
+      const getTotal = async () => {
+        return MoviesModel.countDocuments({}, (err, count) => count)
+      }
 
       if (!Object.keys(params).length) {
-        movies = await MoviesModel.find()
+        response.movies = await MoviesModel.find().limit( limit )
+        response.total = await getTotal()
       } else {
         if (params.name) {
-          movies = await MoviesModel.find({ $text: { $search: params.name } })
+          response.movies = await MoviesModel.find({ $text: { $search: params.name } }).limit( limit )
         } else if (params.genre) {
           const genre = await GenresModel.findOne({ 'name': { $regex: new RegExp(params.genre, 'i') } })
-          movies = await MoviesModel.find({ genre_ids: { $all: [genre['_id']] } })
+          response.movies = await MoviesModel.find({ genre_ids: { $all: [genre['_id']] } }).limit( limit )
+        } else if (params.page) {
+          const skip = params.page * limit
+          response.movies = await MoviesModel.find().skip( skip ).limit( limit )
+          response.total = await getTotal()
         }
       }
 
-      if (!movies.length)
+      if (!response.movies.length)
         throw new Error()
 
-      return movies
+      return response
     } catch {
       return { error: 'movie not found' }
     }
