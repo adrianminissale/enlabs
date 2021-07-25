@@ -1,0 +1,12 @@
+.pagination {
+  text-align: center;
+
+  a {
+    color: #fff;
+    padding: 0 10px;
+    text-decoration: none;
+    &.active {
+      color: red;
+    }
+  }
+}
