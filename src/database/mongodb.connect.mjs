@@ -9,7 +9,7 @@ const dbConnection = () => {
     useFindAndModify: false
   })
   .then(() => {
-    console.log('Base de datos conectada')
+    console.log('Connected to MongoDB')
   })
   .catch((err) => {
     console.log(err)

@@ -1,4 +1,5 @@
 import MoviesModel from '../models/movies.models.mjs'
+import GenresModel from '../models/genres.models.mjs'
 
 class MoviesService {
 
@@ -12,9 +13,10 @@ class MoviesService {
         movies = await MoviesModel.find()
       } else {
         if (params.name) {
-          movies = await MoviesModel.find( { $text: { $search: params.name } } )
+          movies = await MoviesModel.find({ $text: { $search: params.name } })
         } else if (params.genre) {
-          movies = await MoviesModel.find(params)
+          const genre = await GenresModel.findOne({ 'name': { $regex: new RegExp(params.genre, 'i') } })
+          movies = await MoviesModel.find({ genre_ids: { $all: [genre['_id']] } })
         }
       }
 

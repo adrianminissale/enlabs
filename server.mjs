@@ -9,12 +9,12 @@ const PORT = process.env.PORT || 8080
 
 const server = app.listen(PORT, () => {
   const address = server.address()
-  console.log(`Servidor levantado en el puerto ${address.port}`)
+  console.log(`Server port: ${address.port}`)
   dbConnection()
 })
 
 server.on('error', (error) => {
-  console.log(`Error en servidor ${error}`)
+  console.log(`Server error: ${error}`)
 })
 
 app.use(express.json())
