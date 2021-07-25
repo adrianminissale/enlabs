@@ -1,8 +1,8 @@
 import express from 'express'
 import 'dotenv/config'
 
-import movies from './src/routes/movies.routes.mjs'
-import dbConnection from './src/database/mongodb.connect.mjs'
+import movies from './server/routes/movies.routes.mjs'
+import dbConnection from './server/database/mongodb.connect.mjs'
 
 const app = express()
 const PORT = process.env.PORT || 8080

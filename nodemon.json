@@ -1,4 +1,4 @@
 {
-  "watch": ["server.mjs", "src/"],
+  "watch": ["server.mjs", "server/"],
   "ext": "mjs"
 }
