@@ -4,7 +4,6 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Header from './components/Header/'
 import Footer from './components/Footer/'
 import Movies from './components/Movies/'
-import Detail from './components/Detail/'
 
 import styles from './styles.module.scss'
 
@@ -26,9 +25,6 @@ function App() {
             </Route>
             <Route path='/name/:name'>
               <Movies />
-            </Route>
-            <Route path='/movie/:id'>
-              <Detail />
             </Route>
           </Switch>
         </div>
