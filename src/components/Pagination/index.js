@@ -11,7 +11,7 @@ function Pagination( props ) {
     const links = []
     for (let i = 0; i < pages; i++) {
       let current = i + 1
-      links.push( <NavLink activeClassName='active' key={ current } to={`/page/${ current }`}>{ current }</NavLink> )
+      links.push( <NavLink activeClassName={ styles.active } key={ current } to={`/page/${ current }`}>{ current }</NavLink> )
     }
     return links
   }
